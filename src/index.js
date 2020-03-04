@@ -20,3 +20,7 @@ io.on("connection", function(socket){
         io.emit("test", data);
     });
 }); 
+
+io.on("disconnect", function(socket){
+    console.log("disconnected");
+});
