@@ -1,4 +1,5 @@
-const knex = require("./config/db");
+const config = require("../knexfile");
+const knex = require("knex")(config);
 const {Model} = require("objection");
 const PORT = process.env.PORT;
 const app = require("express")();
@@ -6,7 +7,8 @@ const server = require("http").Server(app);
 const bodyParser = require("body-parser");
 const io = require("socket.io")(server);
 const {format } = require('date-fns');
-//Classes
+
+//Models
 const User = require("./models/Person");
 //Intacing the model with the knex sql.
 Model.knex(knex);   

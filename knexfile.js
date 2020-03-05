@@ -1,6 +1,6 @@
 require("dotenv").config();
 const path = require("path");
-const knex = require("knex")({
+module.exports = {
   client: process.env.CLIENT,
   connection: {
       host: process.env.HOST,
@@ -9,8 +9,6 @@ const knex = require("knex")({
       database: process.env.DB
   },
   migrations: {
-    directory: path.resolve("../migrations"),
+    directory: path.resolve("./src/migrations"),
   },
-});
-
-module.exports = knex;
+};
