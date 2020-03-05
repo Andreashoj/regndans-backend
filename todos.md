@@ -9,7 +9,7 @@
  *[ ] files folder
 ### Endpoints
  *[ ] Create a standard Route group
- *[ ] build out 
 ### Sockets
  *[ ] Create a socket for drawing board
 ### Authentication
+ *[ ] create JsonWebtokek
