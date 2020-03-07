@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 
 //Rename this funciton to it's perpose.
 async function main(id){
-    
+
     //We use the try catch here because the await blocks the thread. 
     try{
         //Objection provides multiple ways to work with the database, Here is a simple query example. 
@@ -41,7 +41,6 @@ app.get("/:id", async function(req,res){
 });
 
 io.on("connection", function(socket){
-
     socket.on("chat", function(data){
         io.sockets.emit("chat", data);
     });
