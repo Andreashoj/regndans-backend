@@ -5,11 +5,10 @@ const PORT = process.env.PORT;
 const app = require("express")();
 const server = require("http").Server(app);
 const bodyParser = require("body-parser");
+const users = require("./routes/users");
 const io = require("socket.io")(server);
 const {format} = require('date-fns');
 
-//Models
-const User = require("./models/Person");
 //Intacing the model with the knex sql.
 Model.knex(knex);
 
@@ -17,39 +16,7 @@ server.listen(PORT);
 
 //Middlwares
 app.use(bodyParser.json());
-
-//Rename this funciton to it's perpose.
-async function main(id) {
-
-    //We use the try catch here because the await blocks the thread. 
-    try {
-        //Objection provides multiple ways to work with the database, Here is a simple query example. 
-        const person = await User.query().findById(id);
-        //Date fns makes javascript dates easy to work with here is an example of a simple format.
-        if (typeof person.created === "object") {
-            const test = format(person.created, 'yyyy-MM-dd');
-        }
-        return person;
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-app.get("/api/users/:id", async function (req, res) {
-    const person = await main(req.params.id);
-    res.status(200).json({data: person});
-});
-
-
-app.post("/api/users", async function (req, res) {
-    const newUser = req.body;
-
-    const user = await User.query()
-        .allowGraph('[username, email]')  // only allow these fields to have values inserted
-        .insert(newUser)
-
-    res.send(user)
-})
+app.use('/api/users', users);
 
 
 io.on("connection", function (socket) {
