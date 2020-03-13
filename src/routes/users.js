@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require("../models/Person");
-const bcrypt = require('bcrypt');
+
 
 async function getUser(id) {
     //We use the try catch here because the await blocks the thread.
@@ -20,9 +20,6 @@ async function getUser(id) {
 
 async function createUser(newUser) {
     try {
-        const salt = await bcrypt.genSalt(10);
-        newUser.password = await bcrypt.hash(newUser.password, salt);
-        console.log(newUser)
         const user = await User.query()
             .insert(newUser)
         return user;
