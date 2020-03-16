@@ -11,21 +11,21 @@ class User extends Model {
         return "id";
     }
 
-    async $beforeInsert (queryContext) { // Doing password hashing right before query insert to avoid validation on a hashed password
+    async $beforeInsert(queryContext) { // Doing password hashing right before query insert to avoid validation on a hashed password
         const salt = await bcrypt.genSalt(10)
-        console.log('before insert')
         this.password = await bcrypt.hash(this.password, salt)
+
     }
 
     static get jsonSchema() {
         return {
             type: 'object',
-            required: ['email', 'username'],
+            required: ['email', 'username', 'password'],
 
             properties: {
-                id: { type: 'integer'},
-                email: { type: 'string'},
-                username: { type: 'string'},
+                id: {type: 'integer'},
+                email: {type: 'string'},
+                username: {type: 'string'},
                 password: {
                     type: 'string',
                     pattern: "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
