@@ -37,7 +37,7 @@ router.get("/:id", async function (req, res) {
 
 router.post("/", async function (req, res) {
     const result = await createUser(req.body)
-    if(result.name === 'ValidationError') {  // not sure how to handle errors yet.
+    if(result.statusCode === 400) {  // not sure how to handle errors yet.
         res.status(result.statusCode).send(result)
         return;
     }
