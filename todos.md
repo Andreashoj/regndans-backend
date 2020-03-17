@@ -7,6 +7,9 @@
 ### Folder Structure
  *[ ] Find out what type of structure we should do
  *[ ] files folder
+### Models
+ *[ ] Draw
+ *[ ] User
 ### Endpoints
  *[ ] Create a standard Route group
 ### Sockets

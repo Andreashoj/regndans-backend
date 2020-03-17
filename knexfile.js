@@ -11,5 +11,8 @@ module.exports = {
     migrations: {
         directory: path.resolve("./src/migrations"),
     },
+    seeds: {    
+        directory: path.resolve("./src/seeds"),
+    },
     debug: true
 };

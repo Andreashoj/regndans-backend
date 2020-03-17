@@ -18,9 +18,22 @@
   * npx knex migrate:latest 
   or if you have knex globally installed: 
   * knex migrate:latest
-  
+  * knex migrate:rollback
+
+  **Create a new migration**  
   If you want to create a database operation you can do following:
   * knex migrate:make **name of the migration**
+  
+  ## Knex Seeds
+  If you want test data in your database you can run the 
+  **knex seed:run** 
+  This will give you some dummy data, 
+  If you want to create new dummy data, you can do the:
+
+  **knex seed:make** 
+
+  And then you can follow the 01_users.js seed to see how you can insert data.  
+
   ## Objection
     Objection the ORM that holds our database tables. You can find bunch of examples how to use
     it by looking inside our models foler.

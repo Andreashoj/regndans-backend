@@ -1,15 +1,14 @@
 const BaseModel = require("./BaseModel");
 
-class User extends BaseModel {
-
+class Draw extends BaseModel{
   static get tableName(){
-      return "users"
+    return 'draw';
   }
 
   static get idColumn(){
-      return "id";
+    return 'drawId';
   }
   
-}
+};
 
-module.exports = User;
+module.exports = Draw;

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require("../models/Person");
+const {format} = require("date-fns");
 
 async function getUser(id) {
     //We use the try catch here because the await blocks the thread.
@@ -24,7 +25,7 @@ router.get("/:id", async function (req, res) {
 
 router.post("/", async function (req, res) {
     const newUser = req.body;
-
+    
     const user = await User.query()
         .allowGraph('[username, email]')  // only allow these fields to have values inserted
         .insert(newUser)
