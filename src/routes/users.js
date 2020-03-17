@@ -20,8 +20,8 @@ async function getUser(id) {
 
 async function createUser(newUser) {
     try {
-        const user = await User.query()
-            .insert(newUser)
+        //TODO check if email already exists
+        const user = await User.query().insert(newUser)
         return user;
     } catch (err) {
         console.log(err)

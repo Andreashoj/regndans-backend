@@ -14,7 +14,10 @@ class User extends Model {
     async $beforeInsert(queryContext) { // Doing password hashing right before query insert to avoid validation on a hashed password
         const salt = await bcrypt.genSalt(10)
         this.password = await bcrypt.hash(this.password, salt)
+    }
 
+    getUsername() { // just to test methods
+        return this.username
     }
 
     static get jsonSchema() {
