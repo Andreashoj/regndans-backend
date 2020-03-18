@@ -1,5 +1,6 @@
 const {Model} = require("objection");
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 class User extends Model {
 
@@ -14,6 +15,11 @@ class User extends Model {
     async $beforeInsert(queryContext) { // Doing password hashing right before query insert to avoid validation on a hashed password
         const salt = await bcrypt.genSalt(10)
         this.password = await bcrypt.hash(this.password, salt)
+    }
+
+    generateAuthToken() {
+        const token = jwt.sign({_id: this.id}, process.env.jwtPrivate);
+        return token;
     }
 
     getUsername() { // just to test methods

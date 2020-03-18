@@ -17,7 +17,7 @@ router.post("/", async function (req, res) {
     const validPassword = await bcrypt.compare(req.body.password, user.password)  // check if password in the req matches with the hashed password in db
     if (!validPassword) return res.status(400).send('Invalid email or password'); // throw generic error if password isn't valid
 
-    const token = jwt.sign({_id: user.id}, process.env.jwtPrivate); //generate json webtoken
+    const token = user.generateAuthToken() //generate json webtoken
 
     res.send(token)
 })

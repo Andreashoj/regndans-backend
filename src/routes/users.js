@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require("../models/Person");
+const jwt = require('jsonwebtoken');
 
 
 async function getUser(id) {
@@ -27,7 +28,6 @@ async function createUser(newUser) {
         console.log(err)
         return err;
     }
-
 }
 
 router.get("/:id", async function (req, res) {
@@ -36,12 +36,13 @@ router.get("/:id", async function (req, res) {
 });
 
 router.post("/", async function (req, res) {
-    const result = await createUser(req.body)
-    if(result.statusCode === 400) {  // not sure how to handle errors yet.
-        res.status(result.statusCode).send(result)
+    const user = await createUser(req.body)
+    if(user.statusCode === 400) {  // not sure how to handle errors yet.
+        res.status(user.statusCode).send(user)
         return;
     }
-    res.send(result)
+    const token = user.generateAuthToken();
+    res.header('x-auth-token', token).send(user)
 })
 
 
