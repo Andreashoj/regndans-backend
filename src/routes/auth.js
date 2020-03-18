@@ -3,7 +3,6 @@ const router = express.Router();
 const User = require("../models/Person");
 const Joi = require('@hapi/joi');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 router.post("/", async function (req, res) {
     console.log(req.body)

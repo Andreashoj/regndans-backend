@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require("../models/Person");
-const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth');
 
 
 async function getUser(id) {
@@ -30,7 +30,7 @@ async function createUser(newUser) {
     }
 }
 
-router.get("/:id", async function (req, res) {
+router.get("/:id", auth, async function (req, res) {
     const person = await getUser(req.params.id);
     res.status(200).json({data: person});
 });

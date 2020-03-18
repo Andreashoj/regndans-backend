@@ -22,7 +22,7 @@ Model.knex(knex);
 
 server.listen(PORT);
 
-//Middlwares
+//Middlewares
 app.use(bodyParser.json());
 app.use('/api/users', users);
 app.use('/api/auth', auth);
