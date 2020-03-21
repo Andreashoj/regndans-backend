@@ -1,57 +1,55 @@
 const express = require('express');
 const router = express.Router();
 const User = require("../models/Person");
-const bcrypt = require('bcrypt');
+const auth = require('../middleware/auth');
 
-async function getUser(id) {
-    //We use the try catch here because the await blocks the thread.
-    try {
-        //Objection provides multiple ways to work with the database, Here is a simple query example.
-        const person = await User.query().findById(id);
-        //Date fns makes javascript dates easy to work with here is an example of a simple format.
-        if (typeof person.created === "object") {
-            const test = format(person.created, 'yyyy-MM-dd');
-        }
-        return person;
-    } catch (e) {
-        console.error(e);
-    }
-}
+
+// async function getUser(id) {
+//     //We use the try catch here because the await blocks the thread.
+//     try {
+//         //Objection provides multiple ways to work with the database, Here is a simple query example.
+//         const person = await User.query().findById(id);
+//         //Date fns makes javascript dates easy to work with here is an example of a simple format.
+//         if (typeof person.created === "object") {
+//             const test = format(person.created, 'yyyy-MM-dd');
+//         }
+//         return person;
+//     } catch (e) {
+//         console.error(e);
+//     }
+// }
 
 async function createUser(newUser) {
     try {
-        const salt = await bcrypt.genSalt(10);
-        newUser.password = await bcrypt.hash(newUser.password, salt);
-        console.log(newUser)
-        const user = await User.query()
-            .insert(newUser)
+        //TODO check if email already exists
+        const user = await User.query().insert(newUser)
         return user;
     } catch (err) {
         console.log(err)
         return err;
     }
-
 }
 
-router.get("/:id", async function (req, res) {
-    const person = await getUser(req.params.id);
-    res.status(200).json({data: person});
-});
+// router.get("/:id", auth, async function (req, res) {
+//     const person = await getUser(req.params.id);
+//     res.status(200).json({data: person});
+// });
+
+router.get("/me", auth, async function (req, res) {
+    console.log('this is the req id', req.user)
+    const user = await User.query().findById(req.user._id).select('id', 'username', 'email');
+    console.log(user)
+    res.send(user)
+})
 
 router.post("/", async function (req, res) {
-    const newUser = req.body;
-    
-    const user = await User.query()
-        .allowGraph('[username, email]')  // only allow these fields to have values inserted
-        .insert(newUser)
-
-    res.send(user)
-    const result = await createUser(req.body)
-    if(result.name === 'ValidationError') {  // not sure how to handle errors yet.
-        res.status(result.statusCode).send(result)
+    const user = await createUser(req.body)
+    if(user.statusCode === 400) {  // not sure how to handle errors yet.
+        res.status(user.statusCode).send(user)
         return;
     }
-    res.send(result)
+    const token = user.generateAuthToken();
+    res.header('x-auth-token', token).send(user)
 })
 
 
