@@ -8,7 +8,7 @@ const bodyParser = require("body-parser");
 const users = require("./routes/users");
 const io = require("socket.io")(server);
 const draw = require("./routes/draw");
-
+const files = require("./routes/fileUpload");
 //Intacing the model with the knex sql.
 Model.knex(knex);
 
@@ -18,6 +18,7 @@ server.listen(PORT);
 app.use(bodyParser.json());
 app.use('/api/draw', draw);
 app.use('/api/users', users);
+app.use('/api/uploads', files);
 
 io.on("connection", function (socket) {
 
