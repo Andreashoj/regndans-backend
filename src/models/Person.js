@@ -5,7 +5,7 @@ const BaseModel = require("./BaseModel");
 
 class User extends BaseModel {
 
-    constructor(){
+    constructor() {
         super();
     }
 
@@ -17,7 +17,20 @@ class User extends BaseModel {
         return "id";
     }
 
-    async $beforeInsert(queryContext) { // Doing password hashing right before query insert to avoid validation on a hashed password
+    // This method is called right before a query().insert is called on the User model
+    async $beforeInsert(queryContext) {
+        //Check if user email already exist when trying to create a user.
+        const email = await User.query().where('email', this.email).first();
+        if (email) {
+            throw {
+                data: {
+                    email: 'Already Exists.'
+                },
+                statusCode: 400
+            };
+        }
+
+        // Doing password hashing right before query insert to avoid validation on a hashed password
         const salt = await bcrypt.genSalt(10)
         this.password = await bcrypt.hash(this.password, salt)
     }
@@ -38,8 +51,15 @@ class User extends BaseModel {
 
             properties: {
                 id: {type: 'integer'},
-                email: {type: 'string'},
-                username: {type: 'string'},
+                email: {
+                    type: 'string',
+                    format: 'email'
+                },
+                username: {
+                    type: 'string',
+                    minLength: 5,
+                    maxLength: 24
+                },
                 password: {
                     type: 'string',
                     pattern: "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
