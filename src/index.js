@@ -18,6 +18,7 @@ if(!process.env.jwtPrivate) {
 }
 
 
+const files = require("./routes/fileUpload");
 //Intacing the model with the knex sql.
 Model.knex(knex);
 
@@ -29,6 +30,7 @@ app.use(bodyParser.json());
 app.use('/api/draw', draw);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
+app.use('/api/uploads', files);
 
 io.on("connection", function (socket) {
 
