@@ -24,7 +24,7 @@ class User extends BaseModel {
         if (email) {
             throw {
                 data: {
-                    email: 'Already Exists.'
+                    email: '"Email" already exists.'
                 },
                 statusCode: 400
             };

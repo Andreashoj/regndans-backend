@@ -10,6 +10,7 @@ const users = require("./routes/users");
 const auth = require("./routes/auth");
 const io = require("socket.io")(server);
 const draw = require("./routes/draw");
+const cors = require("cors")
 
 if(!process.env.jwtPrivate) {
     console.log('FATAL ERROR: jwtPrivateKey is not defined.')
@@ -23,6 +24,7 @@ Model.knex(knex);
 server.listen(PORT);
 
 //Middlewares
+app.use(cors());
 app.use(bodyParser.json());
 app.use('/api/draw', draw);
 app.use('/api/users', users);
