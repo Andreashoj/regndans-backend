@@ -21,7 +21,6 @@ const auth = require('../middleware/auth');
 
 async function createUser(newUser) {
     try {
-        //TODO check if email already exists
         const user = await User.query().insert(newUser)
         return user;
     } catch (err) {
